@@ -1,0 +1,48 @@
+.main-section {
+  display: flex;
+  /*justify-content: center;*/
+  align-items: center;
+  flex-direction: column;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 60px;
+}
+
+.main {
+  display: flex;
+}
+
+.tower {
+  margin: 10px;
+  background-color: gray;
+  border-bottom: 25px solid black;
+  width: 200px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.tower:hover {
+  border-color: blue;
+}
+
+.peg {
+  height: 30px;
+  background-color: blue;
+  margin-bottom: 10px;
+  border-radius: 15px;
+}
+
+#peg-0 {
+  width: 60px;
+}
+#peg-1 {
+  width: 120px;
+}
+#peg-2 {
+  width: 180px;
+}

@@ -1,0 +1,30 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.main > h1 {
+  font-size: 60px;
+  margin: 5px;
+}
+
+.row {
+  display: flex;
+}
+
+.tile {
+  width: 150px;
+  height: 150px;
+  margin: 5px;
+  background-color: green;
+}
+
+.tile:hover {
+  background-color: red;
+}
+
+body {
+  background-color: blue;
+}

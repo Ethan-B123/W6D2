@@ -1,0 +1,25 @@
+/* PHASE 10: Posts */
+.individual-response{
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+}
+
+.right-side {
+  width: calc(100% - 78px);
+}
+
+.left-side {
+  width: 58px;
+}
+
+.response-title{
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.individual-response ul {
+  
+}
