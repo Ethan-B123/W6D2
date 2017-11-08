@@ -60,15 +60,145 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+class Snake {
+  constructor(direction = "N", length = 4) {
+    this.direction = direction;
+    this.segments = [];
+    this.length = length;
+    this.lastSpot = undefined;
+    this.growAmount = 5;
+    this.growFrames = 0;
+    // this.growing = false;
+    this.score = 0;
+    this.updateScore = function(){};
+  }
+
+  placeSnake(pos) {
+    this.segments.push(pos);
+    for (let i = 1; i < this.length; i++) {
+      this.segments.push([pos[0], pos[1] + i]);
+    }
+  }
+
+  move() {
+    if (this.growFrames <= 0) {
+      this.lastSpot = this.segments.pop();
+    } else {
+      this.growFrames--;
+      // this.growing = false;
+    }
+    let head = this.segments[0];
+    switch (this.direction) {
+      case "N":
+        this.segments.unshift([head[0], head[1] - 1]);
+        break;
+      case "E":
+        this.segments.unshift([head[0] + 1, head[1]]);
+        break;
+      case "S":
+        this.segments.unshift([head[0], head[1] + 1]);
+        break;
+      case "W":
+        this.segments.unshift([head[0] - 1, head[1]]);
+        break;
+    }
+  }
+
+  turn(newDirection) {
+    this.direction = newDirection;
+  }
+
+  grow() {
+    this.score += 1;
+    this.updateScore(this.score);
+    // this.growing = true;
+    this.growFrames = this.growAmount;
+  }
+}
+
+module.exports = Snake;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+class Board {
+  constructor(snake, x = 20, y = 20, newAppleCb) {
+    this.snake = snake;
+    this.x = x;
+    this.y = y;
+    this.counter = 0;
+    this.applesArr = [];
+    this.newAppleCb = newAppleCb;
+  }
+
+  gameOver() {
+    this.counter += 1;
+    this.generateApples();
+    this.checkEaten();
+    return this.hitWall() || this.hitSelf();
+  }
+
+  hitWall() {
+    let head = this.snake.segments[0];
+    if (head[0] < 0 || head[0] > this.x) {
+      return true;
+    }
+    else if (head[1] < 0 || head[1] > this.y) {
+      return true;
+    }
+    return false;
+  }
+
+  hitSelf() {
+    let head = this.snake.segments[0];
+    let body = this.snake.segments;
+    for (let i = 1; i < body.length; i++) {
+      if (body[i][0] === head[0] && body[i][1] === head[1]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  generateApples() {
+    if (this.applesArr.length === 0) {
+      const newApplePos =
+        [Math.floor(Math.random() * this.x),
+        Math.floor(Math.random() * this.y)];
+      this.newAppleCb(newApplePos);
+      this.applesArr.push(newApplePos);
+    }
+  }
+
+  checkEaten() {
+    let head = this.snake.segments[0];
+    for (let i = 0; i < this.applesArr.length; i++) {
+      if (this.applesArr[i][0] === head[0] && this.applesArr[i][1] === head[1]) {
+        this.applesArr.splice(i, 1);
+        this.snake.grow();
+      }
+    }
+  }
+}
+
+module.exports = Board;
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Snake = __webpack_require__(1);
-const Board = __webpack_require__(2);
+const Snake = __webpack_require__(0);
+const Board = __webpack_require__(1);
 const View = __webpack_require__(3);
 
 
@@ -122,8 +252,9 @@ $( () => {
       clearInterval(interval);
       lost = true;
       setTimeout(()=>{
-        alert("game over!");
-        window.location.reload();
+        if (window.confirm("game over. try again?")) {
+          window.location.reload();
+        }
       }, 20);
 
     }
@@ -132,137 +263,11 @@ $( () => {
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-class Snake {
-  constructor(direction = "N", length = 4) {
-    this.direction = direction;
-    this.segments = [];
-    this.length = length;
-    this.lastSpot = undefined;
-    this.growing = false;
-    this.score = 0;
-    this.updateScore = function(){};
-  }
-
-  placeSnake(pos) {
-    this.segments.push(pos);
-    for (let i = 1; i < this.length; i++) {
-      this.segments.push([pos[0], pos[1] + i]);
-    }
-  }
-
-  move() {
-    if (!this.growing) {
-      this.lastSpot = this.segments.pop();
-    } else {
-      this.growing = false;
-    }
-    let head = this.segments[0];
-    switch (this.direction) {
-      case "N":
-        this.segments.unshift([head[0], head[1] - 1]);
-        break;
-      case "E":
-        this.segments.unshift([head[0] + 1, head[1]]);
-        break;
-      case "S":
-        this.segments.unshift([head[0], head[1] + 1]);
-        break;
-      case "W":
-        this.segments.unshift([head[0] - 1, head[1]]);
-        break;
-    }
-  }
-
-  turn(newDirection) {
-    this.direction = newDirection;
-  }
-
-  grow() {
-    this.score += 1;
-    this.updateScore(this.score);
-    this.growing = true;
-  }
-}
-
-module.exports = Snake;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-class Board {
-  constructor(snake, x = 20, y = 20, newAppleCb) {
-    this.snake = snake;
-    this.x = x;
-    this.y = y;
-    this.counter = 0;
-    this.applesArr = [];
-    this.newAppleCb = newAppleCb;
-  }
-
-  gameOver() {
-    this.counter += 1;
-    this.generateApples();
-    this.checkEaten();
-    return this.hitWall() || this.hitSelf();
-  }
-
-  hitWall() {
-    let head = this.snake.segments[0];
-    if (head[0] < 0 || head[0] > this.x) {
-      return true;
-    }
-    else if (head[1] < 0 || head[1] > this.y) {
-      return true;
-    }
-    return false;
-  }
-
-  hitSelf() {
-    let head = this.snake.segments[0];
-    let body = this.snake.segments;
-    for (let i = 1; i < body.length; i++) {
-      if (body[i][0] === head[0] && body[i][1] === head[1]) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  generateApples() {
-    if (this.counter % 20 === 0) {
-      const newApplePos =
-        [Math.floor(Math.random() * this.x),
-        Math.floor(Math.random() * this.y)];
-      this.newAppleCb(newApplePos);
-      this.applesArr.push(newApplePos);
-    }
-  }
-
-  checkEaten() {
-    let head = this.snake.segments[0];
-    for (let i = 0; i < this.applesArr.length; i++) {
-      if (this.applesArr[i][0] === head[0] && this.applesArr[i][1] === head[1]) {
-        this.applesArr.splice(i, 1);
-        this.snake.grow();
-      }
-    }
-  }
-}
-
-module.exports = Board;
-
-
-/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Snake = __webpack_require__(1);
-const Board = __webpack_require__(2);
+const Snake = __webpack_require__(0);
+const Board = __webpack_require__(1);
 
 class View {
   constructor(board, $el) {

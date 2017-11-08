@@ -53,8 +53,9 @@ $( () => {
       clearInterval(interval);
       lost = true;
       setTimeout(()=>{
-        alert("game over!");
-        window.location.reload();
+        if (window.confirm("game over. try again?")) {
+          window.location.reload();
+        }
       }, 20);
 
     }

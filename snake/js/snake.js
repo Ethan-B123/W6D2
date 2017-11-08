@@ -4,7 +4,9 @@ class Snake {
     this.segments = [];
     this.length = length;
     this.lastSpot = undefined;
-    this.growing = false;
+    this.growAmount = 5;
+    this.growFrames = 0;
+    // this.growing = false;
     this.score = 0;
     this.updateScore = function(){};
   }
@@ -17,10 +19,11 @@ class Snake {
   }
 
   move() {
-    if (!this.growing) {
+    if (this.growFrames <= 0) {
       this.lastSpot = this.segments.pop();
     } else {
-      this.growing = false;
+      this.growFrames--;
+      // this.growing = false;
     }
     let head = this.segments[0];
     switch (this.direction) {
@@ -46,7 +49,8 @@ class Snake {
   grow() {
     this.score += 1;
     this.updateScore(this.score);
-    this.growing = true;
+    // this.growing = true;
+    this.growFrames = this.growAmount;
   }
 }
 

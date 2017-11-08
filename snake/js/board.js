@@ -38,7 +38,7 @@ class Board {
   }
 
   generateApples() {
-    if (this.counter % 20 === 0) {
+    if (this.applesArr.length === 0) {
       const newApplePos =
         [Math.floor(Math.random() * this.x),
         Math.floor(Math.random() * this.y)];
