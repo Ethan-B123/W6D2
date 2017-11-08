@@ -70,6 +70,7 @@
 class Snake {
   constructor(direction = "N", length = 4) {
     this.direction = direction;
+    this.dirQueue = [];
     this.segments = [];
     this.length = length;
     this.lastSpot = undefined;
@@ -95,6 +96,9 @@ class Snake {
       // this.growing = false;
     }
     let head = this.segments[0];
+    if (this.dirQueue.length > 0) {
+      this.direction = this.dirQueue.pop();
+    }
     switch (this.direction) {
       case "N":
         this.segments.unshift([head[0], head[1] - 1]);
@@ -113,7 +117,8 @@ class Snake {
 
   turn(newDirection) {
     if (this.checkTurn(newDirection)) {
-      this.direction = newDirection;
+      this.dirQueue.unshift(newDirection)
+      // this.direction = newDirection;
     }
   }
 
@@ -122,7 +127,7 @@ class Snake {
     if (!dirs.includes(newDirection)) {
       return false;
     }
-    switch (this.direction) {
+    switch (this.dirQueue[this.dirQueue.length - 1]) {
       case "N":
         if (newDirection === "S") {
           return false;
@@ -290,7 +295,7 @@ $( () => {
       }, 20);
 
     }
-  }, 50);
+  }, 75);
 });
 
 
