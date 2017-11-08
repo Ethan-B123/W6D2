@@ -112,7 +112,39 @@ class Snake {
   }
 
   turn(newDirection) {
-    this.direction = newDirection;
+    if (this.checkTurn(newDirection)) {
+      this.direction = newDirection;
+    }
+  }
+
+  checkTurn(newDirection) {
+    const dirs = ["N", "E", "S", "W"];
+    if (!dirs.includes(newDirection)) {
+      return false;
+    }
+    switch (this.direction) {
+      case "N":
+        if (newDirection === "S") {
+          return false;
+        }
+        break;
+      case "E":
+        if (newDirection === "W") {
+          return false;
+        }
+        break;
+      case "S":
+        if (newDirection === "N") {
+          return false;
+        }
+        break;
+      case "W":
+        if (newDirection === "E") {
+          return false;
+        }
+        break;
+    }
+    return true;
   }
 
   grow() {
