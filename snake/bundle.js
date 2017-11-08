@@ -158,6 +158,16 @@ class Snake {
     // this.growing = true;
     this.growFrames = this.growAmount;
   }
+
+  isAt(pos) {
+    const body = this.segments;
+    for (let i = 1; i < body.length; i++) {
+      if (body[i][0] === pos[0] && body[i][1] === pos[1]) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 module.exports = Snake;
@@ -197,20 +207,17 @@ class Board {
 
   hitSelf() {
     let head = this.snake.segments[0];
-    let body = this.snake.segments;
-    for (let i = 1; i < body.length; i++) {
-      if (body[i][0] === head[0] && body[i][1] === head[1]) {
-        return true;
-      }
+    if (this.snake.isAt(head)) {
+      return true;
     }
     return false;
   }
 
   generateApples() {
     if (this.applesArr.length === 0) {
-      const newApplePos =
-        [Math.floor(Math.random() * this.x),
-        Math.floor(Math.random() * this.y)];
+      const newApplePos = this.generateApplePos();
+        // [Math.floor(Math.random() * this.x),
+        // Math.floor(Math.random() * this.y)];
       this.newAppleCb(newApplePos);
       this.applesArr.push(newApplePos);
     }
@@ -224,6 +231,24 @@ class Board {
         this.snake.grow();
       }
     }
+  }
+
+  emptySpots() {
+    const empty = [];
+    for (var i = 0; i <= this.x; i++) {
+      for (var j = 0; j < this.y; j++) {
+        if (!this.snake.isAt([i, j])) {
+          empty.push([i, j]);
+        }
+      }
+    }
+    return empty;
+  }
+
+  generateApplePos(){
+    const spots = this.emptySpots();
+    const spotIdx = Math.floor(Math.random() * spots.length);
+    return spots[spotIdx];
   }
 }
 
@@ -287,7 +312,7 @@ $( () => {
     v.updateBoard();
     if (b.gameOver() && !lost) {
       clearInterval(interval);
-      v.showGameOver()
+      v.showGameOver();
       lost = true;
       setTimeout(()=>{
         if (window.confirm("game over. try again?")) {

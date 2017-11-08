@@ -89,6 +89,16 @@ class Snake {
     // this.growing = true;
     this.growFrames = this.growAmount;
   }
+
+  isAt(pos) {
+    const body = this.segments;
+    for (let i = 1; i < body.length; i++) {
+      if (body[i][0] === pos[0] && body[i][1] === pos[1]) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 
 module.exports = Snake;
