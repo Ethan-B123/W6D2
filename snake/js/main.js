@@ -23,6 +23,9 @@ $( () => {
 
   v.setupBoard();
 
+
+  $(".reset-button").click(() => window.location.reload());
+
   $(window).keypress(function(e) {
     let key = e.which;
     switch (key) {
@@ -53,12 +56,6 @@ $( () => {
       clearInterval(interval);
       v.showGameOver();
       lost = true;
-      setTimeout(()=>{
-        if (window.confirm("game over. try again?")) {
-          window.location.reload();
-        }
-      }, 20);
-
     }
   }, 75);
 });

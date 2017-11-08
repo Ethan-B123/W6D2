@@ -284,6 +284,9 @@ $( () => {
 
   v.setupBoard();
 
+
+  $(".reset-button").click(() => window.location.reload());
+
   $(window).keypress(function(e) {
     let key = e.which;
     switch (key) {
@@ -314,12 +317,6 @@ $( () => {
       clearInterval(interval);
       v.showGameOver();
       lost = true;
-      setTimeout(()=>{
-        if (window.confirm("game over. try again?")) {
-          window.location.reload();
-        }
-      }, 20);
-
     }
   }, 75);
 });
@@ -388,6 +385,8 @@ class View {
 
   showGameOver(){
     $(".tile").addClass("game-over");
+    const head = this.snake.segments[0];
+    $(`#${head[0]}-${head[1]}`).html("<div class='dead-snake fill'></div>");
   }
 }
 

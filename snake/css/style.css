@@ -19,7 +19,7 @@
 }
 
 .game-over {
-  background-color: gray;
+  background-color: #ddd;
 }
 
 .snake {
@@ -47,4 +47,27 @@ h1{
 
 .apple {
   background-color: #0f0;
+}
+
+.dead-snake {
+  background-color: #f00
+}
+
+.top-left {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+.reset-button {
+  padding: 10px 20px;
+  margin: 20px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  background-color: #eee;
+}
+
+.reset-button:hover {
+  background-color: #fff;
+  cursor: pointer;
 }

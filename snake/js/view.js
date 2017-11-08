@@ -57,6 +57,8 @@ class View {
 
   showGameOver(){
     $(".tile").addClass("game-over");
+    const head = this.snake.segments[0];
+    $(`#${head[0]}-${head[1]}`).html("<div class='dead-snake fill'></div>");
   }
 }
 
