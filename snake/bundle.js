@@ -117,7 +117,7 @@ class Snake {
 
   turn(newDirection) {
     if (this.checkTurn(newDirection)) {
-      this.dirQueue.unshift(newDirection)
+      this.dirQueue.unshift(newDirection);
       // this.direction = newDirection;
     }
   }
@@ -127,7 +127,7 @@ class Snake {
     if (!dirs.includes(newDirection)) {
       return false;
     }
-    switch (this.dirQueue[this.dirQueue.length - 1]) {
+    switch (this.dirQueue[this.dirQueue.length - 1] || this.direction) {
       case "N":
         if (newDirection === "S") {
           return false;
@@ -287,6 +287,7 @@ $( () => {
     v.updateBoard();
     if (b.gameOver() && !lost) {
       clearInterval(interval);
+      v.showGameOver()
       lost = true;
       setTimeout(()=>{
         if (window.confirm("game over. try again?")) {
@@ -342,23 +343,26 @@ class View {
     if (this.pauseBool) {
       debugger;
     }
-    $(`#${newPos[0]}-${newPos[1]}`).addClass("snake");
-    $(`#${newPos[0]}-${newPos[1]}`).html("");
-    $(`#${oldPos[0]}-${oldPos[1]}`).removeClass("snake");
+    $(`#${newPos[0]}-${newPos[1]}`).html('<div class="snake fill"></div>');
+    $(`#${oldPos[0]}-${oldPos[1]}`).html('');
   }
 
   printApples() {
     this.board.applesArr.forEach(function(apple) {
-      $(`#${apple[0]}-${apple[1]}`).html("<div class='apple'></div>");
+      $(`#${apple[0]}-${apple[1]}`).html("<div class='apple fill'></div>");
     });
   }
 
   printApple(pos) {
-    $(`#${pos[0]}-${pos[1]}`).html("<div class='apple'></div>");
+    $(`#${pos[0]}-${pos[1]}`).html("<div class='apple fill'></div>");
   }
 
   pause(){
     this.pauseBool = true;
+  }
+
+  showGameOver(){
+    $(".tile").addClass("game-over");
   }
 }
 

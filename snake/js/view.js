@@ -37,23 +37,26 @@ class View {
     if (this.pauseBool) {
       debugger;
     }
-    $(`#${newPos[0]}-${newPos[1]}`).addClass("snake");
-    $(`#${newPos[0]}-${newPos[1]}`).html("");
-    $(`#${oldPos[0]}-${oldPos[1]}`).removeClass("snake");
+    $(`#${newPos[0]}-${newPos[1]}`).html('<div class="snake fill"></div>');
+    $(`#${oldPos[0]}-${oldPos[1]}`).html('');
   }
 
   printApples() {
     this.board.applesArr.forEach(function(apple) {
-      $(`#${apple[0]}-${apple[1]}`).html("<div class='apple'></div>");
+      $(`#${apple[0]}-${apple[1]}`).html("<div class='apple fill'></div>");
     });
   }
 
   printApple(pos) {
-    $(`#${pos[0]}-${pos[1]}`).html("<div class='apple'></div>");
+    $(`#${pos[0]}-${pos[1]}`).html("<div class='apple fill'></div>");
   }
 
   pause(){
     this.pauseBool = true;
+  }
+
+  showGameOver(){
+    $(".tile").addClass("game-over");
   }
 }
 

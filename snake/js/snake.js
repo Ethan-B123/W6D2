@@ -48,7 +48,7 @@ class Snake {
 
   turn(newDirection) {
     if (this.checkTurn(newDirection)) {
-      this.dirQueue.unshift(newDirection)
+      this.dirQueue.unshift(newDirection);
       // this.direction = newDirection;
     }
   }
@@ -58,7 +58,7 @@ class Snake {
     if (!dirs.includes(newDirection)) {
       return false;
     }
-    switch (this.dirQueue[this.dirQueue.length - 1]) {
+    switch (this.dirQueue[this.dirQueue.length - 1] || this.direction) {
       case "N":
         if (newDirection === "S") {
           return false;

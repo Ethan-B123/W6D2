@@ -51,6 +51,7 @@ $( () => {
     v.updateBoard();
     if (b.gameOver() && !lost) {
       clearInterval(interval);
+      v.showGameOver()
       lost = true;
       setTimeout(()=>{
         if (window.confirm("game over. try again?")) {
