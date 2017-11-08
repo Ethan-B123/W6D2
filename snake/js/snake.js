@@ -5,6 +5,8 @@ class Snake {
     this.length = length;
     this.lastSpot = undefined;
     this.growing = false;
+    this.score = 0;
+    this.updateScore = function(){};
   }
 
   placeSnake(pos) {
@@ -42,6 +44,8 @@ class Snake {
   }
 
   grow() {
+    this.score += 1;
+    this.updateScore(this.score);
     this.growing = true;
   }
 }

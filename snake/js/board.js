@@ -1,10 +1,11 @@
 class Board {
-  constructor(snake, x = 10, y = 10) {
+  constructor(snake, x = 20, y = 20, newAppleCb) {
     this.snake = snake;
     this.x = x;
     this.y = y;
     this.counter = 0;
     this.applesArr = [];
+    this.newAppleCb = newAppleCb;
   }
 
   gameOver() {
@@ -38,9 +39,11 @@ class Board {
 
   generateApples() {
     if (this.counter % 20 === 0) {
-      this.applesArr.push(
+      const newApplePos =
         [Math.floor(Math.random() * this.x),
-        Math.floor(Math.random() * this.y)]);
+        Math.floor(Math.random() * this.y)];
+      this.newAppleCb(newApplePos);
+      this.applesArr.push(newApplePos);
     }
   }
 

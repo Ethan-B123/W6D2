@@ -86,7 +86,7 @@ const View = __webpack_require__(3);
 $( () => {
   let s = new Snake;
   let b = new Board(s);
-  s.placeSnake([5,11]);
+  s.placeSnake( [Math.floor(b.x / 2), b.y + 1] );
   let v = new View(b, $('.main'));
   let lost = false;
 
@@ -107,20 +107,27 @@ $( () => {
       case 97:
       s.turn("W");
         break;
+      case 112:
+      // alert("yep");
+      v.pause();
+        break;
     }
   });
 
   const interval = setInterval( () => {
     s.move();
+    // v.printApples();
     v.updateBoard();
-    v.printApples();
     if (b.gameOver() && !lost) {
       clearInterval(interval);
       lost = true;
-      setTimeout(()=>{alert("game over!");}, 20);
+      setTimeout(()=>{
+        alert("game over!");
+        window.location.reload();
+      }, 20);
 
     }
-  }, 150);
+  }, 50);
 });
 
 
@@ -135,6 +142,8 @@ class Snake {
     this.length = length;
     this.lastSpot = undefined;
     this.growing = false;
+    this.score = 0;
+    this.updateScore = function(){};
   }
 
   placeSnake(pos) {
@@ -172,6 +181,8 @@ class Snake {
   }
 
   grow() {
+    this.score += 1;
+    this.updateScore(this.score);
     this.growing = true;
   }
 }
@@ -184,12 +195,13 @@ module.exports = Snake;
 /***/ (function(module, exports) {
 
 class Board {
-  constructor(snake, x = 10, y = 10) {
+  constructor(snake, x = 20, y = 20, newAppleCb) {
     this.snake = snake;
     this.x = x;
     this.y = y;
     this.counter = 0;
     this.applesArr = [];
+    this.newAppleCb = newAppleCb;
   }
 
   gameOver() {
@@ -223,9 +235,11 @@ class Board {
 
   generateApples() {
     if (this.counter % 20 === 0) {
-      this.applesArr.push(
+      const newApplePos =
         [Math.floor(Math.random() * this.x),
-        Math.floor(Math.random() * this.y)]);
+        Math.floor(Math.random() * this.y)];
+      this.newAppleCb(newApplePos);
+      this.applesArr.push(newApplePos);
     }
   }
 
@@ -255,6 +269,13 @@ class View {
     this.board = board;
     this.$el = $el;
     this.snake = this.board.snake;
+    this.board.newAppleCb = (pos) => {
+      this.printApple(pos);
+    };
+
+    this.snake.updateScore = (newScore) => {
+      $(".score").text(newScore);
+    };
   }
 
   setupBoard() {
@@ -276,15 +297,26 @@ class View {
   updateBoard() {
     const newPos = this.snake.segments[0];
     const oldPos = this.snake.lastSpot;
+    if (this.pauseBool) {
+      debugger;
+    }
     $(`#${newPos[0]}-${newPos[1]}`).css('background-color', 'red');
+    $(`#${newPos[0]}-${newPos[1]}`).html("");
     $(`#${oldPos[0]}-${oldPos[1]}`).css('background-color', 'white');
   }
 
   printApples() {
-    $('.tile').text("");
     this.board.applesArr.forEach(function(apple) {
-      $(`#${apple[0]}-${apple[1]}`).text("A");
+      $(`#${apple[0]}-${apple[1]}`).html("<div class='apple'></div>");
     });
+  }
+
+  printApple(pos) {
+    $(`#${pos[0]}-${pos[1]}`).html("<div class='apple'></div>");
+  }
+
+  pause(){
+    this.pauseBool = true;
   }
 }
 

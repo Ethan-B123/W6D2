@@ -17,7 +17,7 @@ const View = require('./view.js');
 $( () => {
   let s = new Snake;
   let b = new Board(s);
-  s.placeSnake([5,11]);
+  s.placeSnake( [Math.floor(b.x / 2), b.y + 1] );
   let v = new View(b, $('.main'));
   let lost = false;
 
@@ -38,18 +38,25 @@ $( () => {
       case 97:
       s.turn("W");
         break;
+      case 112:
+      // alert("yep");
+      v.pause();
+        break;
     }
   });
 
   const interval = setInterval( () => {
     s.move();
+    // v.printApples();
     v.updateBoard();
-    v.printApples();
     if (b.gameOver() && !lost) {
       clearInterval(interval);
       lost = true;
-      setTimeout(()=>{alert("game over!");}, 20);
+      setTimeout(()=>{
+        alert("game over!");
+        window.location.reload();
+      }, 20);
 
     }
-  }, 150);
+  }, 50);
 });

@@ -6,6 +6,13 @@ class View {
     this.board = board;
     this.$el = $el;
     this.snake = this.board.snake;
+    this.board.newAppleCb = (pos) => {
+      this.printApple(pos);
+    };
+
+    this.snake.updateScore = (newScore) => {
+      $(".score").text(newScore);
+    };
   }
 
   setupBoard() {
@@ -27,15 +34,26 @@ class View {
   updateBoard() {
     const newPos = this.snake.segments[0];
     const oldPos = this.snake.lastSpot;
+    if (this.pauseBool) {
+      debugger;
+    }
     $(`#${newPos[0]}-${newPos[1]}`).css('background-color', 'red');
+    $(`#${newPos[0]}-${newPos[1]}`).html("");
     $(`#${oldPos[0]}-${oldPos[1]}`).css('background-color', 'white');
   }
 
   printApples() {
-    $('.tile').text("");
     this.board.applesArr.forEach(function(apple) {
-      $(`#${apple[0]}-${apple[1]}`).text("A");
+      $(`#${apple[0]}-${apple[1]}`).html("<div class='apple'></div>");
     });
+  }
+
+  printApple(pos) {
+    $(`#${pos[0]}-${pos[1]}`).html("<div class='apple'></div>");
+  }
+
+  pause(){
+    this.pauseBool = true;
   }
 }
 
