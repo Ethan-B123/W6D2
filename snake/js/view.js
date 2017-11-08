@@ -37,9 +37,9 @@ class View {
     if (this.pauseBool) {
       debugger;
     }
-    $(`#${newPos[0]}-${newPos[1]}`).css('background-color', 'red');
+    $(`#${newPos[0]}-${newPos[1]}`).addClass("snake");
     $(`#${newPos[0]}-${newPos[1]}`).html("");
-    $(`#${oldPos[0]}-${oldPos[1]}`).css('background-color', 'white');
+    $(`#${oldPos[0]}-${oldPos[1]}`).removeClass("snake");
   }
 
   printApples() {

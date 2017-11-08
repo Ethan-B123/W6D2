@@ -18,13 +18,22 @@
   flex-direction: column;
 }
 
+.snake {
+  background-color: black;
+}
+
+.score {
+  font-size: 24px;
+  font-weight: bold;
+}
+
 h1{
   font-size: 40px;
   margin: 20px;
 }
 
 .top-box {
-  border: 1px black solid;
+  border: 20px black solid;
 }
 
 .apple {
